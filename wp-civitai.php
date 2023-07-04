@@ -21,6 +21,15 @@ if (!class_exists('WpCivitai')) {
         public function __construct() {
             register_activation_hook(WP_CIVITAI_FILE, array($this, 'install'));
             add_shortcode('civitai', array($this, 'shortcode_output'));
+            add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts_styles'));
+        }
+
+        public function enqueue_scripts_styles() {
+            // enqueue CSS
+            wp_enqueue_style('wp-civitai-css', plugin_dir_url(__FILE__) . 'css/wp-civitai.css');
+
+            // enqueue JavaScript with jQuery dependency
+            wp_enqueue_script('wp-civitai-js', plugin_dir_url(__FILE__) . 'js/wp-civitai.js', array('jquery'));
         }
 
         public function shortcode_output($atts) {
@@ -48,24 +57,21 @@ if (!class_exists('WpCivitai')) {
         }
 
         private function format_output($type, $data) {
-            // Format the data as needed for output
-
-            if ($type == 'model') {
-                // Format the data as needed for output
-            } else {
-                // Print an error message
-                return 'Invalid shortcode. Please specify a valid type';
+            switch ($type) {
+                case 'model':
+                    require_once WP_CIVITAI_PATH . 'pages/single-model.php';
+                    $page = new WpCivitaiSingleModelPage($data);
+                    return $page->process_and_render();
+                default:
+                    return 'Invalid shortcode. Please specify a valid type';
             }
-
-            // For now, we'll just return it as is
-            return print_r($data, true);
         }
 
         private function api_call($endpoint) {
             // Get API key and username from options
             $options = get_option('wp_civitai_options');
             $api_key = $options['api-key'];
-            $username = $options['username'];
+            $username = $options['civitai-username'];
 
             // Prepare the API request
             $args = array(
@@ -109,13 +115,6 @@ if (!class_exists('WpCivitai')) {
                 require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
                 dbDelta($sql);
             }
-            $default_settings = array(
-                'api-key' => null,
-                'username' => null,
-                'cache-minutes' => 60,
-                'hide-nsfw' => true
-            );
-            add_option('wp_civitai_options', $default_settings);
         }
 
         public function get_data($endpoint) {

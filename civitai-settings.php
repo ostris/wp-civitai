@@ -11,7 +11,7 @@ if (!class_exists('WpCivitaiSettings')) {
         public function add_default_settings(): void {
             $default_settings = array(
                 'api-key' => null,
-                'username' => null,
+                'civitai-username' => null,
                 'cache-minutes' => 60,
                 'hide-nsfw' => true
             );
@@ -98,21 +98,21 @@ if (!class_exists('WpCivitaiSettings')) {
                 'wp-civitai-setting-admin' // Page
             );
 
-//            add_settings_field(
-//                'api-key', // ID
-//                'API Key', // Title
-//                array($this, 'api_key_callback'), // Callback
-//                'wp-civitai-setting-admin', // Page
-//                'setting_section_id' // Section
-//            );
+            add_settings_field(
+                'api-key', // ID
+                'API Key', // Title
+                array($this, 'api_key_callback'), // Callback
+                'wp-civitai-setting-admin', // Page
+                'setting_section_id' // Section
+            );
 
-//            add_settings_field(
-//                'username',
-//                'Username',
-//                array($this, 'username_callback'),
-//                'wp_civitai-setting-admin',
-//                'setting_section_id'
-//            );
+            add_settings_field(
+                'civitai-username',
+                'Civitai Username',
+                array($this, 'username_callback'),
+                'wp-civitai-setting-admin',
+                'setting_section_id'
+            );
 
             add_settings_field(
                 'cache-minutes',
@@ -137,8 +137,8 @@ if (!class_exists('WpCivitaiSettings')) {
             if (isset($input['api-key']))
                 $new_input['api-key'] = sanitize_text_field($input['api-key']);
 
-            if (isset($input['username']))
-                $new_input['username'] = sanitize_text_field($input['username']);
+            if (isset($input['civitai-username']))
+                $new_input['civitai-username'] = sanitize_text_field($input['civitai-username']);
 
             if (isset($input['cache-minutes']))
                 $new_input['cache-minutes'] = absint($input['cache-minutes']);
@@ -159,8 +159,8 @@ if (!class_exists('WpCivitaiSettings')) {
 
         public function username_callback(): void {
             printf(
-                '<input type="text" id="username" name="wp_civitai_options[username]" value="%s" />',
-                isset($this->options['username']) ? esc_attr($this->options['username']) : ''
+                '<input type="text" id="civitai-username" name="wp_civitai_options[civitai-username]" value="%s" />',
+                isset($this->options['civitai-username']) ? esc_attr($this->options['civitai-username']) : ''
             );
         }
 
