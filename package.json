@@ -1,0 +1,30 @@
+{
+    "name": "wp-civitai",
+    "version": "1.0.0",
+    "description": "Plugin for the Civitai wordpress site",
+    "main": "index.js",
+    "scripts": {
+        "build": "wp-scripts build",
+        "start": "wp-scripts start",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ostris/wp-civitai.git"
+    },
+    "author": "Jaret Burkett <jaretburkett@gmail.com>",
+    "license": "GPL-3.0",
+    "bugs": {
+        "url": "https://github.com/ostris/wp-civitai/issues"
+    },
+    "homepage": "https://github.com/ostris/wp-civitai#readme",
+    "devDependencies": {
+        "@wordpress/scripts": "^26.7.0",
+        "prettier": "^2.8.8",
+        "prettier-basic": "^1.0.0"
+    },
+    "dependencies": {
+        "@wordpress/blocks": "^12.13.0"
+    },
+    "prettier": "prettier-basic"
+}

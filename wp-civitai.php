@@ -15,6 +15,7 @@ define('WP_CIVITAI_URL', plugin_dir_url(__FILE__));
 
 
 require_once WP_CIVITAI_PATH . 'civitai-settings.php';
+require_once WP_CIVITAI_PATH . 'wp-civitai-page.php';
 
 if (!class_exists('WpCivitai')) {
     class WpCivitai {
@@ -25,11 +26,8 @@ if (!class_exists('WpCivitai')) {
         }
 
         public function enqueue_scripts_styles() {
-            // enqueue CSS
-            wp_enqueue_style('wp-civitai-css', plugin_dir_url(__FILE__) . 'css/wp-civitai.css');
-
-            // enqueue JavaScript with jQuery dependency
-            wp_enqueue_script('wp-civitai-js', plugin_dir_url(__FILE__) . 'js/wp-civitai.js', array('jquery'));
+            wp_enqueue_style('wp-civitai-style', plugin_dir_url(__FILE__) . 'build/index.css');
+            wp_enqueue_script('wp-civitai-script', plugin_dir_url(__FILE__) . 'build/index.js', array('wp-element'), '1.0.0', true);
         }
 
         public function shortcode_output($atts) {
@@ -50,21 +48,8 @@ if (!class_exists('WpCivitai')) {
 
             $data = $this->get_data($endpoint);
 
-            // Format the data as needed for output
-            $output = $this->format_output($type, $data);
-
-            return $output;
-        }
-
-        private function format_output($type, $data) {
-            switch ($type) {
-                case 'model':
-                    require_once WP_CIVITAI_PATH . 'pages/single-model.php';
-                    $page = new WpCivitaiSingleModelPage($data);
-                    return $page->process_and_render();
-                default:
-                    return 'Invalid shortcode. Please specify a valid type';
-            }
+            $page = new WpCivitaiPage($type, $data);
+            return $page->process_and_render();
         }
 
         private function api_call($endpoint) {
