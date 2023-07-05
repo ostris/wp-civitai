@@ -24,7 +24,12 @@
         "prettier-basic": "^1.0.0"
     },
     "dependencies": {
-        "@wordpress/blocks": "^12.13.0"
+        "@emotion/react": "^11.11.1",
+        "@mantine/carousel": "^6.0.16",
+        "@mantine/core": "^6.0.16",
+        "@mantine/hooks": "^6.0.16",
+        "@wordpress/blocks": "^12.13.0",
+        "embla-carousel-react": "^8.0.0-rc07"
     },
     "prettier": "prettier-basic"
 }
